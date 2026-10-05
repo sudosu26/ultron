@@ -1,0 +1,43 @@
+2026-10-05 23:12:51,377 | INFO     | ultron | ULTRON starting…
+2026-10-05 23:12:55,469 | INFO     | ultron | ULTRON window shown.
+2026-10-05 23:13:59,869 | INFO     | ultron | [REDACTED — sensitive content]
+2026-10-05 23:13:59,876 | INFO     | ultron | Vault saved (1 entries).
+2026-10-05 23:13:59,877 | INFO     | ultron | [REDACTED — sensitive content]
+2026-10-05 23:14:05,952 | ERROR    | ultron | Gemini API error: HTTP 404
+2026-10-05 23:14:05,955 | ERROR    | ultron | Stream worker error: RuntimeError
+2026-10-05 23:14:40,863 | INFO     | ultron | Vault saved (1 entries).
+2026-10-05 23:14:40,864 | INFO     | ultron | [REDACTED — sensitive content]
+2026-10-05 23:14:45,889 | ERROR    | ultron | Gemini API error: HTTP 404
+2026-10-05 23:14:45,898 | ERROR    | ultron | Stream worker error: RuntimeError
+2026-10-05 23:24:54,068 | INFO     | ultron | ULTRON starting…
+2026-10-05 23:24:55,363 | INFO     | ultron | ULTRON window shown.
+2026-10-05 23:25:03,072 | INFO     | ultron | Gemini reported 44 usable models.
+2026-10-05 23:25:03,076 | INFO     | ultron | Gemini model resolved to 'gemini-3.8-flash'.
+2026-10-05 23:25:06,449 | ERROR    | ultron | Stream worker error: RuntimeError
+2026-10-05 23:25:39,509 | INFO     | ultron | Vault saved (1 entries).
+2026-10-05 23:25:39,510 | INFO     | ultron | [REDACTED — sensitive content]
+2026-10-05 23:25:49,867 | ERROR    | ultron | Stream worker error: RuntimeError
+2026-10-05 23:26:07,029 | INFO     | ultron | ULTRON starting…
+2026-10-05 23:26:08,445 | INFO     | ultron | ULTRON window shown.
+2026-10-05 23:26:14,789 | INFO     | ultron | Vault saved (1 entries).
+2026-10-05 23:26:14,791 | INFO     | ultron | [REDACTED — sensitive content]
+2026-10-05 23:26:20,270 | INFO     | ultron | Gemini reported 44 usable models.
+2026-10-05 23:26:20,273 | INFO     | ultron | Gemini model resolved to 'gemini-3.8-flash'.
+2026-10-05 23:26:22,738 | ERROR    | ultron | Stream worker error: RuntimeError
+2026-10-05 23:30:57,251 | INFO     | ultron | ULTRON starting…
+2026-10-05 23:30:58,541 | INFO     | ultron | ULTRON window shown.
+2026-10-05 23:38:23,330 | INFO     | ultron | ULTRON starting…
+2026-10-05 23:38:24,825 | INFO     | ultron | ULTRON window shown.
+2026-10-05 23:38:29,596 | INFO     | ultron | Trying Gemini model 'gemini-flash-latest'…
+2026-10-05 23:38:33,075 | WARNING  | ultron | Transient error on 'gemini-flash-latest' (attempt 1/3). Retrying in 1.5s…
+2026-10-05 23:38:36,044 | WARNING  | ultron | Transient error on 'gemini-flash-latest' (attempt 2/3). Retrying in 3.0s…
+2026-10-05 23:38:47,875 | INFO     | ultron | Vault saved (1 entries).
+2026-10-05 23:38:47,876 | INFO     | ultron | [REDACTED — sensitive content]
+2026-10-05 23:38:49,876 | INFO     | ultron | Gemini model 'gemini-flash-latest' succeeded.
+2026-10-05 23:38:53,548 | INFO     | ultron | Trying Gemini model 'gemini-flash-latest'…
+2026-10-05 23:39:00,008 | INFO     | ultron | Gemini model 'gemini-flash-latest' succeeded.
+2026-10-05 23:39:30,222 | INFO     | ultron | Trying Gemini model 'gemini-flash-latest'…
+2026-10-05 23:39:31,955 | WARNING  | ultron | Transient error on 'gemini-flash-latest' (attempt 1/3). Retrying in 1.5s…
+2026-10-05 23:39:38,014 | INFO     | ultron | Gemini model 'gemini-flash-latest' succeeded.
+2026-10-05 23:40:26,941 | INFO     | ultron | ULTRON starting…
+2026-10-05 23:40:28,315 | INFO     | ultron | ULTRON window shown.
