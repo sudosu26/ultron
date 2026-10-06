@@ -2,6 +2,10 @@
 
 API keys are encrypted with a key stored in Windows Credential Manager.
 The encrypted blob is written to a file on disk.
+
+Supports multiple API keys per provider (stored as a JSON list under
+'<provider>__keys'). Automatically migrates from the older single-key
+format ('<provider>_api_key') on first read.
 """
 
 import json
@@ -20,10 +24,6 @@ _VAULT_FILE = CONFIG_DIR / "vault.enc"
 
 
 def _get_or_create_master_key() -> bytes:
-    """Retrieve the master encryption key from Windows Credential Manager.
-
-    If it does not exist, generate a new one and store it.
-    """
     existing = keyring.get_password(_SERVICE_NAME, _KEY_NAME)
     if existing:
         return existing.encode("utf-8")
@@ -34,7 +34,6 @@ def _get_or_create_master_key() -> bytes:
 
 
 def _load_vault() -> dict:
-    """Load and decrypt the vault file. Returns an empty dict if no vault exists."""
     if not _VAULT_FILE.exists():
         return {}
     try:
@@ -49,7 +48,6 @@ def _load_vault() -> dict:
 
 
 def _save_vault(data: dict) -> None:
-    """Encrypt and write the vault file."""
     master_key = _get_or_create_master_key()
     fernet = Fernet(master_key)
     plaintext = json.dumps(data).encode("utf-8")
@@ -58,8 +56,11 @@ def _save_vault(data: dict) -> None:
     logger.info("Vault saved (%d entries).", len(data))
 
 
+# ---------------------------------------------------------------------------
+# Single-value (kept for backward compatibility with earlier code)
+# ---------------------------------------------------------------------------
+
 def set_credential(name: str, value: str) -> None:
-    """Store a credential (encrypted) in the vault."""
     data = _load_vault()
     data[name] = value
     _save_vault(data)
@@ -67,13 +68,11 @@ def set_credential(name: str, value: str) -> None:
 
 
 def get_credential(name: str) -> str | None:
-    """Retrieve a credential from the vault. Returns None if not found."""
     data = _load_vault()
     return data.get(name)
 
 
 def delete_credential(name: str) -> None:
-    """Remove a credential from the vault."""
     data = _load_vault()
     if name in data:
         del data[name]
@@ -82,5 +81,54 @@ def delete_credential(name: str) -> None:
 
 
 def list_credentials() -> list[str]:
-    """Return the names of stored credentials (not their values)."""
     return list(_load_vault().keys())
+
+
+# ---------------------------------------------------------------------------
+# Multi-key API (preferred for API providers)
+# ---------------------------------------------------------------------------
+
+def get_api_keys(provider: str) -> list[str]:
+    """Return all API keys for a provider.
+
+    Migrates from the single-key format ('<provider>_api_key') if the
+    list is missing or empty. Never logs the keys themselves.
+    """
+    data = _load_vault()
+    list_key = f"{provider}__keys"
+    raw = data.get(list_key)
+    if isinstance(raw, list) and raw:
+        return [k for k in raw if isinstance(k, str) and k]
+    # Migration: single key.
+    single = data.get(f"{provider}_api_key")
+    if isinstance(single, str) and single:
+        return [single]
+    return []
+
+
+def set_api_keys(provider: str, keys: list[str]) -> None:
+    """Replace the list of keys for a provider. Empty strings are dropped."""
+    cleaned = [k.strip() for k in keys if isinstance(k, str) and k.strip()]
+    data = _load_vault()
+    data[f"{provider}__keys"] = cleaned
+    _save_vault(data)
+    logger.info("Stored %d key(s) for provider '%s'.", len(cleaned), provider)
+
+
+def add_api_key(provider: str, key: str) -> None:
+    key = key.strip()
+    if not key:
+        return
+    keys = get_api_keys(provider)
+    if key not in keys:
+        keys.append(key)
+    set_api_keys(provider, keys)
+
+
+def remove_api_key(provider: str, key: str) -> None:
+    keys = [k for k in get_api_keys(provider) if k != key]
+    set_api_keys(provider, keys)
+
+
+def count_api_keys(provider: str) -> int:
+    return len(get_api_keys(provider))

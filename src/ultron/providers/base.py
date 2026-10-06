@@ -17,7 +17,7 @@ class ChatRequest:
     messages: list[ChatMessage]
     model: str
     temperature: float = 0.7
-    max_tokens: int = 2048
+    max_tokens: int = 768
     stream: bool = True
 
 
